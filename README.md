@@ -8,14 +8,14 @@ Ce projet contient :
 
 ## Installation
 
-Forker ce projet depuis GitHub puis aller dans le répertoire de votre choix et lancer la commande 'git clone https://github.com/NoBdr07/P13-POC'.
-Lancer la commande 'npm install' pour installer les dépendances.
-Lancer 'ng serve' pour démarrer l'application.
+Forker ce projet depuis GitHub puis aller dans le répertoire de votre choix et lancer la commande `git clone https://github.com/NoBdr07/P13-POC`.
+Lancer la commande `npm install` pour installer les dépendances.
+Lancer `ng serve` pour démarrer l'application.
 
 ## Utilisation
 
 Toutes les foncionnalités de l'application n'ont pas été implémentées.   
-Quand vous allez sur 'localhost:4200', vous arrivez sur une page d'accueil où vous avez le choix de vous connecter en tant que support ou client.  
+Quand vous allez sur `localhost:4200`, vous arrivez sur une page d'accueil où vous avez le choix de vous connecter en tant que support ou client.  
 Choisissez l'un des deux puis cliquez sur "se connecter".  
 
 Ensuite allez sur "contact" puis "ouvrir le chat".  
