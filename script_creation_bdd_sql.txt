@@ -1,0 +1,117 @@
+
+CREATE SCHEMA IF NOT EXISTS `ycyw_db` DEFAULT CHARACTER SET utf8 ;
+
+
+CREATE TABLE IF NOT EXISTS `ycyw_db`.`utilisateur` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `identifiant` VARCHAR(16) NOT NULL,
+  `email` VARCHAR(255) NOT NULL,
+  `mot_de_passe` VARCHAR(32) NOT NULL,
+  `gdh_creation` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `nom` VARCHAR(45) NOT NULL,
+  `prenom` VARCHAR(45) NOT NULL,
+  `date_de_naissance` DATETIME NOT NULL,
+  `adresse` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `identifiant_UNIQUE` (`identifiant` ASC) INVISIBLE,
+  UNIQUE INDEX `email_UNIQUE` (`email` ASC) VISIBLE,
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE);
+
+
+
+CREATE TABLE IF NOT EXISTS `ycyw_db`.`agence` (
+  `id_agence` INT NOT NULL AUTO_INCREMENT,
+  `nom` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`id_agence`),
+  UNIQUE INDEX `id_agence_UNIQUE` (`id_agence` ASC) VISIBLE);
+
+
+
+CREATE TABLE IF NOT EXISTS `ycyw_db`.`offre` (
+  `id_offre` INT NOT NULL AUTO_INCREMENT,
+  `ville_depart` VARCHAR(45) NOT NULL,
+  `ville_arrivee` VARCHAR(45) NOT NULL,
+  `gdh_debut` DATETIME NOT NULL,
+  `gdh_retour` DATETIME NOT NULL,
+  `categorie_vehicule` VARCHAR(45) NOT NULL,
+  `tarif` DECIMAL(15,2) NOT NULL,
+  `agence_id` INT NOT NULL,
+  PRIMARY KEY (`id_offre`),
+  INDEX `fk_offre_agence_idx` (`agenceId` ASC) VISIBLE,
+  UNIQUE INDEX `id_offre_UNIQUE` (`id_offre` ASC) VISIBLE,
+  CONSTRAINT `fk_offre_agence_id`
+    FOREIGN KEY (`agenceId`)
+    REFERENCES `ycyw_db`.`agence` (`id_agence`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+
+
+CREATE TABLE IF NOT EXISTS `ycyw_db`.`reservation` (
+  `id_reservation` INT NOT NULL AUTO_INCREMENT,
+  `created_at` DATETIME NOT NULL,
+  `statut` VARCHAR(45) NOT NULL,
+  `utilisateur_id` INT NOT NULL,
+  `offre_id` INT NOT NULL,
+  PRIMARY KEY (`id_reservation`),
+  INDEX `fk_reservation_utilisateur_idx` (`utilisateur_id` ASC) VISIBLE,
+  INDEX `fk_reservation_offre_idx` (`offre_id` ASC) VISIBLE,
+  UNIQUE INDEX `id_reservation_UNIQUE` (`id_reservation` ASC) VISIBLE,
+  CONSTRAINT `fk_reservation_utilisateur_id`
+    FOREIGN KEY (`utilisateur_id`)
+    REFERENCES `ycyw_db`.`utilisateur` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_reservation_offre_id`
+    FOREIGN KEY (`offre_id`)
+    REFERENCES `ycyw_db`.`offre` (`id_offre`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+
+CREATE TABLE IF NOT EXISTS `ycyw_db`.`avis` (
+  `id_avis` INT NOT NULL AUTO_INCREMENT,
+  `note` INT NOT NULL,
+  `commentaire` VARCHAR(300) NOT NULL,
+  `offre_id` INT NOT NULL,
+  PRIMARY KEY (`id_avis`),
+  INDEX `fk_avis_offre_idx` (`offre_id` ASC) INVISIBLE,
+  UNIQUE INDEX `id_avis_UNIQUE` (`id_avis` ASC) VISIBLE,
+  CONSTRAINT `fk_avis_offre_id`
+    FOREIGN KEY (`offre_id`)
+    REFERENCES `ycyw_db`.`offre` (`id_offre`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+
+
+CREATE TABLE IF NOT EXISTS `ycyw_db`.`message` (
+  `id_message` INT NOT NULL AUTO_INCREMENT,
+  `contenu` VARCHAR(500) NOT NULL,
+  `gdh` DATETIME NOT NULL,
+  `utilisateur_id` INT NOT NULL,
+  PRIMARY KEY (`id_message`),
+  INDEX `fk_message_utilisateur_idx` (`utilisateur_id` ASC) VISIBLE,
+  UNIQUE INDEX `id_message_UNIQUE` (`id_message` ASC) VISIBLE,
+  CONSTRAINT `fk_message_utilisateur_id`
+    FOREIGN KEY (`utilisateur_id`)
+    REFERENCES `ycyw_db`.`utilisateur` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+
+CREATE TABLE IF NOT EXISTS `ycyw_db`.`paiement` (
+  `id_paiement` INT NOT NULL AUTO_INCREMENT,
+  `montant` DECIMAL(15,2) NOT NULL,
+  `reservation_id` INT NOT NULL,
+  `utilisateur_id` INT NOT NULL,
+  PRIMARY KEY (`id_paiement`),
+  INDEX `fk_paiement_reservation_idx` (`reservation_id` ASC) VISIBLE,
+  UNIQUE INDEX `id_paiement_UNIQUE` (`id_paiement` ASC) VISIBLE,
+  INDEX `fk_paiement_utilisateur1_idx` (`utilisateur_id` ASC) VISIBLE,
+  CONSTRAINT `fk_paiement_reservation_id`
+    FOREIGN KEY (`reservation_id`)
+    REFERENCES `ycyw_db`.`reservation` (`id_reservation`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_paiement_utilisateur1`
+    FOREIGN KEY (`utilisateur_id`)
+    REFERENCES `ycyw_db`.`utilisateur` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
