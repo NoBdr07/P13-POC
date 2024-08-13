@@ -1,0 +1,28 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+    font-family: Montserrat;
+    font-size: 20px;
+}
+
+#form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+}
+
+button {
+    font-family:  Montserrat;
+    padding: 10px;
+    margin: 10px;
+    background-color: white;
+    font-size: 20px;
+}
+
+label {
+    padding: 10px;
+}

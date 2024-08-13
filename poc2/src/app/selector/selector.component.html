@@ -1,0 +1,16 @@
+<div class="container">
+
+<p>Choisissez de vous connecter en mode client ou support d'aide : </p>
+<div id="form">
+    <label>
+      <input type="radio" name="name" value="Support" [(ngModel)]="selectedUser" />
+      Support 
+    </label>
+    <label>
+      <input type="radio" name="name" value="Client" [(ngModel)]="selectedUser" />
+      Client
+    </label>
+  </div>
+
+  <button (click)="connect()">Se connecter</button>
+</div>
